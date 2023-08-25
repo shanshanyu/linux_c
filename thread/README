@@ -1,0 +1,1 @@
+test_ulimit_thread  测试 ulimit -u 是对线程数的线程还是对进程数的限制。   线程是轻量级进程。

@@ -1,0 +1,19 @@
+mytbf是一个流控程序
+
+token  令牌
+cps   流速 character per second  每秒钟的字符
+
+
+
+my  token bucket filter：令牌桶过滤器
+
+
+一个令牌桶的结构应该是什么样的？
+
+
+token
+speed
+pthread_mutex_t mutex;
+
+
+比如要实现一个每秒钟打印10个字符的程序

@@ -1,0 +1,9 @@
+终端 io 的一些操作
+
+csize   字符长度屏蔽字
+
+get_pass   关闭回显
+
+term_info   isatty   ttyname  ctermid(显示终端名字） 
+
+special_ch  特殊的字符，可以通过这个程序测试 CTRL+B 的值是 2，可以看到回车的 ascii 码是 10，如果回车没有当做字符处理，会打印回车的 ascii 码，并不当做控制字符

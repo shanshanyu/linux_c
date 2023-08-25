@@ -1,0 +1,9 @@
+token bucket filter  令牌桶，用多线程实现，每个线程每秒钟加 token，不适用信号那种信号处理函数给所有的 bucket 加 token
+
+token：当前的令牌数
+cps:  character per second 速率
+burst: token 上限
+b_lock: 令牌锁
+
+这个程序只有一把锁，锁令牌桶，缺少一把锁整个令牌桶数组的锁。
+线程中用 nanosleep 来实现定时 1 秒，函数不能在多个线程中同时使用

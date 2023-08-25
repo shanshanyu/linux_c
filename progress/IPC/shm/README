@@ -1,0 +1,5 @@
+用共享存储实现父子进程间通信
+shared memory
+
+
+父进程中的 wait，保证了共享内存的同步，wait 之后再调用的 read

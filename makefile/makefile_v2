@@ -1,0 +1,8 @@
+test: test.o
+	gcc test.o -o test
+test.o: test.c
+	gcc -c test.c
+
+.PHONY: clean
+clean:
+	rm -f *.o test

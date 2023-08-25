@@ -1,0 +1,61 @@
+change：
+修改 get_primer 的任务池版本，当前存在忙等，使用条件变量来解决这种忙等线程
+
+
+函数有一个死锁，是什么原因？
+pthread_mutex_lock...
+while(status != 1){
+      //如果status == -1,线程退出;线程退出之前要解锁,否则其他的线程无法加锁判断状态
+      //err = pthread_cond_timedwait(&lock->cond,&lock->mut,&tv);  死锁的问题在这里
+      /*if(status == -1){
+        err = pthread_mutex_unlock(&lock->mut);
+        if(err != 0)
+          err_print("pthread_mutex_unlock()",err);
+        printf("thread exit\n");
+        pthread_exit(NULL);
+      }*/
+      err = pthread_cond_wait(&lock->cond,&lock->mut);
+      if(err != 0)
+        err_print("pthread_cond_wait()",err);
+      //为什么 -1 的判断放在这里会导致死锁?
+      if(status == -1){
+        err = pthread_mutex_unlock(&lock->mut);
+        if(err != 0)
+          err_print("pthread_mutex_unlock()",err);
+        printf("thread exit\n");
+        pthread_exit(NULL);
+      }
+
+这段代码的逻辑有问题。
+worker 线程可能阻塞的点有两个：
+pthread_mutex_lock
+pthread_cond_wait
+
+如果worker 线程阻塞在mutex_lock，当 main 线程将status=-1,通知 worker，如果worker没阻塞在wait，那么等worker加锁后就执行不到 if（status==-1)
+如果worker阻塞在cond_wait,那么，当 main 线程将status=-1,通知 worker，worker能执行到
+
+
+改成这样：
+while(1){
+    pthread_mutex_lock(&lock->mut);
+    //如果status != 1，就继续等待
+
+
+
+
+
+
+
+
+    //要对两种情况分别做判断
+    while(status == 0)
+      pthread_cond_wait(&lock->cond,&lock->mut);
+    if(status == -1){
+      err = pthread_mutex_unlock(&lock->mut);
+      if(err != 0)
+        err_print("pthread_mutex_unlock()",err);
+      printf("thread exit\n");
+      pthread_exit(NULL);
+    }
+对status == 0 和 status == -1 做分别判断，这样无论 worker阻塞在什么位置，worker都能继续执行下去
+statu == 0 的判断要放在 status == -1 判断的前面，否则worker唤醒后一定会执行到 status = 0 的逻辑

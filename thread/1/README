@@ -1,0 +1,6 @@
+线程的基础操作
+
+get_prime  计算质数，不使用多线程
+get_prime1 计算质数，使用多线程
+get_prime2 计算质数，使用多线程（没有 warning，没用有强转)
+get_prime_pool 计算质数,使用多线程，每个线程分配一批数计算

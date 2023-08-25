@@ -1,0 +1,9 @@
+
+token bucket filter （令牌桶过滤器）
+
+
+cps  charactor per second:速率
+
+burst:令牌桶上限
+
+token: 令牌数

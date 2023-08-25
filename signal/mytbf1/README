@@ -1,0 +1,11 @@
+不使用 signal 和 alarm，使用 sigaction 和 setitimer
+只响应内核发出的ALRM信号
+
+token bucket filter （令牌桶过滤器）
+
+
+cps  charactor per second:速率
+
+burst:令牌桶上限
+
+token: 令牌数

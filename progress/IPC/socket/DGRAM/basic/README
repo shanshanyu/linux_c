@@ -1,0 +1,3 @@
+test_align: 测试 __attribute__((packed))； 属性能不能取消对齐？  可以
+
+报式套接字的使用

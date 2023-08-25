@@ -1,0 +1,8 @@
+存储映射
+
+IOV_MAX   1024
+
+PAGE_SIZE 4K
+
+
+shm  share mem,mmap实现共享内存  父子进程通过共享内存实现进程间通信

@@ -1,0 +1,7 @@
+test_pipe  父进程给子进程传递 “hello world”，子进程打印
+
+
+
+page 通过管道传递数据，调用分页程序打开文件
+
+page_new 改写page，通过popen来实现分页程序

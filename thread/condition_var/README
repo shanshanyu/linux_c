@@ -1,0 +1,6 @@
+测试 pthread_cond_broadcast 的工作方式
+
+broadcast 会唤醒所有阻塞在条件变量的线程，然后它们加锁执行
+
+
+signal 会唤醒一个阻塞在条件变量的线程，然后它加锁执行

@@ -1,0 +1,51 @@
+new_cp  要不要考虑被信号中断的情况，如果被 sigint sigquit 信号中断要不要拉起继续跑？
+
+write 0 个字符会有什么问题？
+If no errors are detected, 0 will be  returned  without causing any other effect.  If count is zero and fd refers to a file other than a regular file, the results are not specified.
+写普通文件没有没有问题，写其他文件结果是未指定的。
+
+
+整个cp的过程应该是什么样的？
+
+while(1){
+1次 read{
+  read成功再write
+  
+}
+1次 write
+}
+
+
+while(1){
+  n = read(buf,BUFSZE,fd);
+  if(n < 0)
+    exit(1);
+  elseif(n == 0)
+    break;
+  else
+   ;
+  
+    
+
+
+}
+
+
+
+while(1){
+    读
+    失败 退出；失败里面判断一种被信号中断的情况，继续读 continue
+    文件尾 break；
+    
+    成功继续下面的语句
+    
+    写数据
+    怎么把 buf 里的数据都写进去
+    加一个 pos 
+    pos = 0;
+    do{
+       wr_ret = write(buf,BUFSIZE,x);
+         
+    }while(pos < sizeof(buf));
+
+}

@@ -1,0 +1,7 @@
+FILE *fopen(const char *path,int mode);
+
+FILE  结构在堆上，如果在栈上，fopen函数结束就会被释放，FILE * 也没法引用到。如果在静态区，多次调用 fopen 后面的会覆盖前面的。
+
+
+***：通过标准io读写文件的标准程序  read_file_new
+
