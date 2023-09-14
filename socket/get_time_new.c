@@ -29,7 +29,7 @@ int main(int argc,const char *argv[]){
   memset(&servaddr,'\0',sizeof(servaddr));
 
   servaddr.sin_family = AF_INET;
-  servaddr.sin_port = htons(3333);  //13 是什么端口？
+  servaddr.sin_port = htons(13);  //13 是什么端口？
   if(inet_pton(AF_INET,argv[1],&servaddr.sin_addr) <= 0){
     fprintf(stderr,"%s 地址格式无效\n",argv[1]);
     exit(1);
@@ -40,7 +40,14 @@ int main(int argc,const char *argv[]){
     exit(1);
   }
 
-  while((n = read(socketfd,recvline,MAX_LINE)) >0){
+  while(1){
+    n = read(socketfd,recvline,MAX_LINE-1);
+    if(n < 0){
+      fprintf(stderr,"read error\n");
+      exit(1);
+    }
+
+    if(n == 0) break;
     recvline[n] = 0;
     if(fputs(recvline,stdout) == EOF){
        fprintf(stderr,"fputs error\n");
