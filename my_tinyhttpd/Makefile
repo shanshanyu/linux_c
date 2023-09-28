@@ -1,7 +1,7 @@
 all: htppd client
 
 httpd: httpd.c
-	gcc $< -o $@ -Wall
+	gcc $< -o $@ -Wall -pthread
 
 client: client.c
 	gcc $< -o $@ -Wall

@@ -1,0 +1,57 @@
+sizeof 的返回值类型是 size_t
+
+在调用 setsockopt 时第四个参数需要传递一个 val
+
+
+ if(pid == 0){ //子进程
+    char meth_env[255];
+    char query_env[255];
+    char length_env[255];
+
+
+    dup2(cgi_output[1],STDOUT);
+    dup2(cgi_input[0],STDIN);  //到这里后每个管道上面有 5 根线
+    close(cgi_output[0]); //关闭子进程的cgi_output读
+    close(cgi_input[1]); //关闭子进程cgi_input的写
+
+    sprintf(meth_env,"REQUEST_METHOD=%s",method);
+    putenv(meth_env); //设置环境变量
+
+    if(strcasecmp(method,"GET") == 0){
+      sprintf(query_env,"QUERY_STRING=%s",query_string);
+      putenv(query_env);
+    }else{ //post 方法
+      sprintf(length_env,"CONTENT_LENGTH=%d",content_length);
+      putenv(length_env);
+    }
+
+    execl(path,NULL);
+    exit(0);
+  }else{  //父进程
+    close(cgi_output[1]);
+    close(cgi_input[0]);
+
+    if(strcasecmp(method,"POST") == 0)
+      for(i = 0; i < content_length; i++){
+        recv(client,&c,1,0);
+        write(cgi_input[1],&c,1);
+      }
+
+    while(read(cgi_output[0],&c,1) > 0)
+      send(client,&c,1,0);
+
+    close(cgi_output[0]);
+    close(cgi_input[1]);
+    waitpid(pid,&status,0);
+  }
+
+dup2(cgi_output[1],STDOUT);
+dup2(cgi_input[0],STDIN);  //到这里后每个管道上面有 5 根线
+close(cgi_output[0]); //关闭子进程的cgi_output读
+close(cgi_input[1]); //关闭子进程cgi_input的写
+
+子进程执行这4条后
+
+cgi_output:子进程的输出会到 cgi_output 的写端
+cgi_input:子进程的输入会从cgi_input 的读端读
+

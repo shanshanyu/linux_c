@@ -21,7 +21,7 @@ int main(){
     perror("fork()");
     exit(1);
   }
-  else if(pid == 0){
+  else if(pid == 0){ //子进程
     //子进程关闭写端
    if(close(fd[1]) == -1){
      perror("close()");
@@ -32,7 +32,7 @@ int main(){
    write(STDOUT_FILENO,buf,n);
    
   }
-  else{
+  else{  //父进程
     //父进程关闭读端
     if(close(fd[0]) == -1){
       perror("close()");
